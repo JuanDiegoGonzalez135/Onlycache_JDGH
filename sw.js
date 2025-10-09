@@ -1,4 +1,4 @@
-const STATIC_CACHE_NAME = 'app-shell-v3';
+const STATIC_CACHE_NAME = 'app-shell-v2';
 const ASSETS = [
   './',
   './index.html',
@@ -6,6 +6,7 @@ const ASSETS = [
   './app.js'
 ];
 
+// Precaching
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(STATIC_CACHE_NAME)
@@ -14,14 +15,18 @@ self.addEventListener('install', event => {
   console.log('[SW] Instalado y App Shell precacheado');
 });
 
+// Cache Only
 self.addEventListener('fetch', event => {
-  const urlPath = new URL(event.request.url).pathname;
-  const isAppShellResource = ASSETS.includes(urlPath);
+  // Comprobamos si el recurso termina igual que alguno del array ASSETS
+  const isAppShellResource = ASSETS.some(asset =>
+    event.request.url.endsWith(asset.replace('./', ''))
+  );
 
   if (isAppShellResource) {
     event.respondWith(
-      caches.match(event.request)
-        .then(response => response)
+      caches.match(event.request).then(response => {
+        if (response) return response;
+      })
     );
   }
 });
