@@ -1,9 +1,9 @@
-const STATIC_CACHE_NAME = 'app-shell-v1';
+const STATIC_CACHE_NAME = 'app-shell-v3';
 const ASSETS = [
-  '/',
-  '/index.html',
-  '/style.css',
-  '/app.js'
+  './',
+  './index.html',
+  './style.css',
+  './app.js'
 ];
 
 self.addEventListener('install', event => {
